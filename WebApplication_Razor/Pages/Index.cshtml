@@ -4,7 +4,23 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>
+    Wecome to ASP.NET CORE
+</h1>
+
+@foreach (var product in Model.Products)
+{
+    <div>
+        <a asp-page="/order" asp-route-id="@product.Id" title="Order @product.Name">
+            <div>
+                <h3>@product.Name</h3>
+                <img src="Url.Content(@product.Image)" />
+                <p>@product.Description</p>
+            </div>
+        </a>
+        <div>
+            <p>$@product.Price</p>
+            <a href="http://@product.Url">Link</a>
+        </div>
+    </div>
+}

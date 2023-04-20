@@ -1,0 +1,65 @@
+﻿@page "{Id:int}"
+@model WebApplication_Razor.Pages.OrderModel
+@{ViewData["Title"] = "My order";}
+
+<ol>
+    <li><span class="step-number">1</span> Choose item</li>
+    <li><span class="step-number">2</span> Details</li>
+</ol>
+<h1> My order: @Model.Product.Name</h1> 
+<h2>Order id: @Model.Id</h2>
+
+<form method="post">
+    <div> 
+        <ul>
+            <li> <p> @Model.Product.Description
+                </p>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email"/>
+                    <span asp-validation-for="Email"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label asp-for="Address"></label>
+                    <textarea  rows="4"  asp-for="Address" />
+                    <span asp-validation-for="Address"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label asp-for="Count"></label>
+                    <input asp-for="Count"/> 
+                    x <span id="Price"> @Model.Product.Price</span> 
+                    = <span id="Total"> @Model.Product.Price</span>
+                    <span asp-validation-for="Count"></span>
+                </div>
+            </li>
+        </ul>
+        <div>
+            <button>Order</button>
+        </div>
+    </div>
+</form>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            var price = parseFloat($("#Price").text()).toFixed(2),
+                total = $("#Total"),
+                orderQty = $("#Count");
+            orderQty.on('change', function () {
+                var quantity = parseInt(orderQty.val());
+                if (!quantity || quantity < 1) {
+                    orderQty.val(1);
+                    quantity = 1;
+                } else if (quantity.toString() !== orderQty.val()) {
+                    orderQty.val(quantity);
+                }
+                total.text("$" + (price * quantity).toFixed(2));
+            });
+        });
+    </script>
+}
